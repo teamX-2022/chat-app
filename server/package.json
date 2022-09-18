@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-
   "scripts": {
-    "build": "rm -rf build/dist && tsc",
-    "server": "nodemon build/dist/index.js",
+    "build": "rm -rf dist && tsc",
+    "server": "nodemon dist/index.js",
     "watch": "tsc -w"
 
   },
