@@ -1,6 +1,12 @@
-import { getModelForClass } from "@typegoose/typegoose";
+
 import  mongoose from "mongoose";
-import { User } from "./entities/User";
+import express from 'express'
+import { createServer } from "http";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { GreetingResolve } from "./resolvers/greeting";
+import { UserResolver } from "./resolvers/user";
 
 
 
@@ -13,4 +19,28 @@ async function connectDB() {
     
 }
 
-connectDB();
+const main = async ()=>{
+    const app = express()
+    const httpServer = createServer(app)
+    const apolloServer = new ApolloServer({
+        schema: await buildSchema({
+            validate: false,
+            resolvers: [GreetingResolve, UserResolver]
+        }),
+        plugins: [
+            ApolloServerPluginDrainHttpServer({httpServer}), ApolloServerPluginLandingPageGraphQLPlayground
+        ]
+    })
+
+    connectDB();
+    await apolloServer.start()
+    await apolloServer.applyMiddleware({app})
+    const PORT = process.env.PORT || 4000
+
+    await new Promise(resolve => httpServer.listen({port: PORT }, resolve as ()=> void))
+    console.log(`server started on port ${PORT}`);
+
+}
+
+
+main().catch(err => console.log(err));

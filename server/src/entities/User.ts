@@ -1,15 +1,24 @@
 import {prop} from '@typegoose/typegoose'
+import { Field, ID, ObjectType } from 'type-graphql'
 
+@ObjectType()
 export class User {
-    @prop({required: true})
+    @Field(() => ID)
+    _id: string;
+    @Field()
+    @prop()
     firstName: string
 
-    @prop({required: true})
+    @Field()
+    @prop()
     lastName: string
 
-    @prop({required: true, trim: true, unique: true})
-    email!: string
+    @Field()
+    @prop()
+    // @prop({required: true, trim: true, unique: true})
+    email: string
 
+    @Field()
     @prop({required: true, trim: true, unique: true})
     username!: string
 
