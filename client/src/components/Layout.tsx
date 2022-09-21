@@ -5,8 +5,8 @@ const Layout = () => {
         <div>
             <h1>JWT AUTHENTICATED FULL STACK</h1>
             <nav style={{ borderBottom: '1px solid', paddingBottom: '1rem' }}>
-                <Link to="login">Login</Link> |<Link to="register">Register</Link> |<Link to="logout">Logout</Link> |{' '}
-                <Link to="profile">Logout</Link>
+                <Link to=".">Home</Link> | <Link to="login">Login</Link> | <Link to="register">Register</Link> |
+                <Link to="logout">Logout</Link> | <Link to="profile">Profile</Link>
             </nav>
             <Outlet />
         </div>
