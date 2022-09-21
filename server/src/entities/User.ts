@@ -25,4 +25,8 @@ export class User {
     username!: string;
     @prop()
     password!: string;
+
+    @Field()
+    @prop({ default: 0 })
+    tokenVersion: number;
 }

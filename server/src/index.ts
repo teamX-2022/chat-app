@@ -10,6 +10,7 @@ import { UserResolver } from './resolvers/user';
 import { Context } from './types/Context';
 import cookieParser from 'cookie-parser';
 import refreshTokenRouter from './routes/refreshTokenRouter';
+import cors from 'cors';
 
 const MONGO_URI =
     'mongodb+srv://admin:mcb2T4w7sLifL85J@cluster1.gfxtcfv.mongodb.net/chat-app?retryWrites=true&w=majority';
@@ -22,6 +23,7 @@ async function connectDB() {
 
 const main = async () => {
     const app = express();
+    app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
     app.use(cookieParser());
     app.use('/refresh_token', refreshTokenRouter);
 

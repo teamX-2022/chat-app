@@ -1,11 +1,13 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/AuthContext';
 import { useLoginMutation } from '../generated/graphql';
 import JWTManager from '../utils/jwt';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { setIsAuthenticatied } = useAuthContext();
     // eslint-disable-next-line
     const [login, _] = useLoginMutation();
     const navigate = useNavigate();
@@ -26,6 +28,7 @@ const Login = () => {
         if (response.data?.login.success) {
             JWTManager.setToken(response.data.login.accessToken as string);
             navigate('..');
+            setIsAuthenticatied(true);
         } else {
             if (response.data?.login.message) setError(response.data?.login.message);
         }
