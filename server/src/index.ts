@@ -1,4 +1,4 @@
-
+require('dotenv').config()
 import  mongoose from "mongoose";
 import express from 'express'
 import { createServer } from "http";
@@ -7,6 +7,7 @@ import { buildSchema } from "type-graphql";
 import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { GreetingResolve } from "./resolvers/greeting";
 import { UserResolver } from "./resolvers/user";
+import { Context } from "./types/Context";
 
 
 
@@ -29,7 +30,8 @@ const main = async ()=>{
         }),
         plugins: [
             ApolloServerPluginDrainHttpServer({httpServer}), ApolloServerPluginLandingPageGraphQLPlayground
-        ]
+        ],
+        context: ({req, res}): Pick<Context, 'req' | 'res'> => ({req, res})
     })
 
     connectDB();
