@@ -4,6 +4,7 @@ import './App.css';
 import Home from './components/Home';
 import Layout from './components/Layout';
 import Login from './components/Login';
+import Message from './components/Message';
 import Profile from './components/Profile';
 import Register from './components/Register';
 import { useAuthContext } from './contexts/AuthContext';
@@ -30,6 +31,7 @@ function App() {
                         <Route path="register" element={<Register />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="logout" element={<Profile />} />
+                        <Route path="message" element={<Message />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

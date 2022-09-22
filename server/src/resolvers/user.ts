@@ -1,14 +1,13 @@
-import { sendRefreshToken } from './../utils/auth';
-import { Context } from './../types/Context';
+import { Context } from '../types/Context';
 import { LoginInput } from './../types/LoginInput';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, ID, Mutation, Query, Resolver } from 'type-graphql';
 
 import 'reflect-metadata';
 import { RegisterInput } from '../types/RegisterInput';
 import UserModel from '../models/UserModel';
 import argon2 from 'argon2';
 import { UserMutationResponse } from '../types/UserMutationResponse';
-import { createToken } from '../utils/auth';
+import { createToken, sendRefreshToken } from '../utils/auth';
 import { User } from '../entities/User';
 import { ObjectId } from 'mongodb';
 
@@ -87,6 +86,28 @@ export class UserResolver {
             message: 'login successfully',
             userId: existingUser._id,
             accessToken: createToken('accessToken', existingUser),
+        };
+    }
+
+    @Mutation((_return) => UserMutationResponse)
+    async logout(
+        @Arg('userId', (_return) => ID) userId: string,
+        @Ctx() { res }: Context,
+    ): Promise<UserMutationResponse> {
+        const existingUser = await UserModel.findOne({ _id: userId });
+        if (!existingUser)
+            return {
+                code: 400,
+                success: false,
+            };
+
+        existingUser.tokenVersion += 1;
+        await existingUser.save();
+
+        res.clearCookie(process.env.REFRESH_TOKEN_COOKIE_NAME as string);
+        return {
+            code: 200,
+            success: true,
         };
     }
 }

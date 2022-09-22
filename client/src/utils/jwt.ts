@@ -4,11 +4,16 @@ import jwtDecode from 'jwt-decode';
 const JWTManager = () => {
     let inMemoryToken: string | null = null;
     let refreshTokenTimeOutId: number | null = null;
+    let userId: string | null = null;
+
     const getToken = () => inMemoryToken;
+    const getUserId = () => userId;
+
     const setToken = (accessToken: string) => {
         inMemoryToken = accessToken;
         // decode and set countdown to refresh
         const decoded = jwtDecode<JwtPayload & { userId: string }>(accessToken);
+        userId = decoded.userId;
         setRefreshTokenTimeOut((decoded.exp as number) - (decoded.iat as number));
         return true;
     };
@@ -20,7 +25,6 @@ const JWTManager = () => {
     const setRefreshTokenTimeOut = (delay: number) => {
         //5s before token expried
         refreshTokenTimeOutId = window.setTimeout(getRefreshToken, delay * 1000 - 5000);
-        console.log(refreshTokenTimeOutId);
     };
 
     const deleteToken = () => {
@@ -46,7 +50,7 @@ const JWTManager = () => {
         }
     };
 
-    return { getToken, setToken, getRefreshToken, deleteToken };
+    return { getToken, setToken, getRefreshToken, deleteToken, getUserId };
 };
 
 export default JWTManager();

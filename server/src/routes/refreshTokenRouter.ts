@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         const decodedUser = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as Secret) as UserAuthPayload;
         const existingUser = await UserModel.findOne({ _id: decodedUser.userId });
 
-        if (!existingUser) return res.sendStatus(401);
+        if (!existingUser || existingUser.tokenVersion !== decodedUser.tokenVersion) return res.sendStatus(401);
 
         sendRefreshToken(res, existingUser);
 
