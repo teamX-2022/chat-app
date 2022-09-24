@@ -17,7 +17,7 @@ export class Message {
   messageText: string;
 
   @Field()
-  @prop({ default: new Date() })
+  @prop({ default: Date.now() })
   createdAt: Date;
 
   @Field(() => String)

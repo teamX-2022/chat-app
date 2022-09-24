@@ -6,9 +6,8 @@ import { User } from "./User";
 
 @ObjectType()
 export class Conversation {
-  @Field(() => ID)
-  @prop()
-  _id: ObjectId;
+  @Field(() => ID, { nullable: true })
+  readonly _id: ObjectId;
 
   @Field()
   @prop()

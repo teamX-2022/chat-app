@@ -10,6 +10,7 @@ export class GreetingResolve {
   @UseMiddleware(checkAuth)
   async hello(@Ctx() { user }: Context): Promise<string> {
     const existingUser = await UserModel.findOne({ _id: user.userId });
+    // console.log(user);
 
     return `hello ${existingUser?.username} world`;
   }
