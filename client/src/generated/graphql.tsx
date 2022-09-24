@@ -15,6 +15,19 @@ export type Scalars = {
   Float: number;
 };
 
+export type FriendRequestInput = {
+  requestId: Scalars['String'];
+  userId: Scalars['String'];
+};
+
+export type FriendRequestMutationResponse = IMutationResponse & {
+  __typename?: 'FriendRequestMutationResponse';
+  code: Scalars['Float'];
+  friendRequest: Scalars['ID'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+};
+
 export type IMutationResponse = {
   code: Scalars['Float'];
   message?: Maybe<Scalars['String']>;
@@ -22,7 +35,6 @@ export type IMutationResponse = {
 };
 
 export type LoginInput = {
-  email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
@@ -32,6 +44,7 @@ export type Mutation = {
   login: UserMutationResponse;
   logout: UserMutationResponse;
   register: UserMutationResponse;
+  sendRequest: FriendRequestMutationResponse;
 };
 
 
@@ -49,6 +62,11 @@ export type MutationRegisterArgs = {
   registerInput: RegisterInput;
 };
 
+
+export type MutationSendRequestArgs = {
+  friendRequestInput: FriendRequestInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
@@ -56,7 +74,6 @@ export type Query = {
 };
 
 export type RegisterInput = {
-  email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
@@ -64,7 +81,8 @@ export type RegisterInput = {
 export type User = {
   __typename?: 'User';
   _id?: Maybe<Scalars['ID']>;
-  email: Scalars['String'];
+  avatar: Scalars['String'];
+  coverPicture: Scalars['String'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   tokenVersion: Scalars['Float'];

@@ -1,11 +1,9 @@
-import { Field, InputType } from "type-graphql"
+import { Field, InputType } from "type-graphql";
 
 @InputType()
-export class RegisterInput{
-    @Field()
-    email: string
-    @Field()
-    username: string
-    @Field()
-    password: string
+export class RegisterInput {
+  @Field()
+  username: string;
+  @Field()
+  password: string;
 }
