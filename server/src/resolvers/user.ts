@@ -13,11 +13,20 @@ import { ObjectId } from "mongodb";
 
 @Resolver()
 export class UserResolver {
+  // lấy tất cả user
   @Query((_return) => [User])
   async users(): Promise<User[]> {
     const us = await UserModel.find({});
 
     return us;
+  }
+
+  // lấy 1 user
+  @Query((_return) => User)
+  async getUser(@Arg("userId") userId: string): Promise<User> {
+    const user = await UserModel.findOne({ _id: userId });
+    if (!user) throw new Error("user not found");
+    return user;
   }
 
   @Mutation((_return) => UserMutationResponse)

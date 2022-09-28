@@ -13,6 +13,10 @@ export class Conversation {
   @prop()
   name: string;
 
+  @Field({ nullable: true })
+  @prop()
+  leaderId: ObjectId;
+
   @Field(() => [String])
   @prop({ type: () => String, ref: () => User })
   members: Ref<User, string>[];

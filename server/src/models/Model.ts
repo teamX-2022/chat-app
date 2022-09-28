@@ -4,11 +4,11 @@ import { FriendRequest } from "../entities/FriendRequest";
 import { Message } from "../entities/Message";
 import { Conversation } from "../entities/Conversation";
 import { Friend } from "../entities/Friend";
-import { GroupMember } from "../entities/GroupMember";
+import { Member } from "../entities/Member";
 
 export const UserModel = getModelForClass(User);
 export const FriendRequestModel = getModelForClass(FriendRequest);
 export const MessageModel = getModelForClass(Message);
 export const ConversationModel = getModelForClass(Conversation);
 export const FriendModel = getModelForClass(Friend);
-export const GroupMemberModel = getModelForClass(GroupMember);
+export const MemberModel = getModelForClass(Member);

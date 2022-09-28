@@ -7,11 +7,15 @@ import {
   PubSub,
   Subscription,
   PubSubEngine,
+  Query,
+  Ctx,
+  UseMiddleware,
 } from "type-graphql";
 import { MessageModel } from "../models/Model";
 import { Message } from "../entities/Message";
-import { MessageResponse } from "../types/MessageResponse";
 import { ObjectId } from "mongodb";
+import { checkAuth } from "../middleware/checkAuth";
+import { Context } from "../types/Context";
 
 // import { PubSub } from "graphql-subscriptions";
 
@@ -19,6 +23,7 @@ import { ObjectId } from "mongodb";
 
 @Resolver()
 export class MessageResolver {
+  // create message
   @Mutation((returns) => Message)
   async createMessage(
     @Arg("createMessageInput")
@@ -44,6 +49,8 @@ export class MessageResolver {
     await pubSub.publish(conversationId, payload);
     return msg;
   }
+
+  // listen message
   @Subscription({ topics: ({ args }) => args.topic })
   messageSent(
     @Arg("topic") topic: String,
@@ -52,5 +59,18 @@ export class MessageResolver {
     console.log(messageText);
 
     return { _id, conversationId, messageText, createdAt, senderId };
+  }
+
+  @Query(() => [Message])
+  @UseMiddleware(checkAuth)
+  async getMessages(
+    @Ctx() { user: { userId } }: Context,
+    @Arg("friendId") friendId: string,
+    @Arg("conversationId") conversationId: string
+  ): Promise<Message[]> {
+    const messages = await MessageModel.find({
+      conversationId: conversationId,
+    }).exec();
+    return messages;
   }
 }
