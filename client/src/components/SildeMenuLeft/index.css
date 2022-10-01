@@ -1,0 +1,12 @@
+.SlideMenu__bao {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    
+   
+    
+}
+.avatar-sidemenu:hover{
+    cursor: pointer;
+}

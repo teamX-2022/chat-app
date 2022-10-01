@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Home from './components/Home';
-import Layout from './components/Layout';
+ import ChatRoom from './components/ChatRoom';
+// import Home from './components/Home';
+// import Layout from './components/Layout';
 import Login from './components/Login';
-import Message from './components/Message';
-import Profile from './components/Profile';
-import Register from './components/Register';
+// import Message from './components/Message';
+// import Profile from './components/Profile';
+// import Register from './components/Register';
 import { useAuthContext } from './contexts/AuthContext';
 
 function App() {
+    
     const [loading, setLoading] = useState(true);
     const { checkAuth } = useAuthContext();
-
+    
+    
     useEffect(() => {
         const authenticate = async () => {
             await checkAuth();
@@ -25,17 +29,25 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Layout />}>
+                    {/* <Route path="/" element={<Login />}>
                         <Route index element={<Home />} />
-                        <Route path="login" element={<Login />} />
+                        <Route path="chat-room" element={<ChatRoom />} />
                         <Route path="register" element={<Register />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="logout" element={<Profile />} />
                         <Route path="message" element={<Message />} />
-                    </Route>
+                    </Route> */}
+                    
+                
+                        <Route path="/" element={<Login />}/>
+                    
+                    <Route path="/chat-room" element={<ChatRoom /> } /> 
                 </Routes>
             </BrowserRouter>
+           
+             
         </div>
+        
     );
 }
 

@@ -1,0 +1,45 @@
+.name-chat__bao:hover .btn-edit-name-chat{
+    display: block;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+.btn-edit-name-chat{
+    display: none;
+    position: absolute;
+    
+    
+}
+.name-chat__bao:hover{
+    cursor: pointer;
+}
+.btn-tran{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+}
+.btn-tran:hover{
+    background-color: none;
+}
+/* .chat-window-top__bao{
+    border: 1px solid black;
+    padding-bottom: 5px;
+} */

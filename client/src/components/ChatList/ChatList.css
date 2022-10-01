@@ -1,0 +1,38 @@
+.chatlist__top{
+    /* background-color: blue; */
+    margin-top: 15px;
+   
+    /* padding-bottom: 15px; */
+    
+}
+
+.menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ItemUser__bao:hover{
+    
+    background-color: #D3D3D3;
+    cursor: pointer;
+
+}
+.ItemUser__bao:hover .item-chat-options{
+    display: block;
+}
+.ItemUser__bao:hover .last-time-chat{
+    display: none;
+}
+.chatlist__bao{
+    padding-right: 0px;
+}
+
+.item-chat-options{
+    background: none;
+    outline: none;
+    display: none;
+}
+.item-chat-options:hover{
+    background:none
+}
