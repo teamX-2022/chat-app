@@ -1,3 +1,4 @@
+import { ConversationResolver } from './conversation';
 import { CreateMessageInput } from '../types/CreateMessageInput';
 import {
     Arg,
@@ -25,18 +26,25 @@ import { Context } from '../types/Context';
 export class MessageResolver {
     // create message
     @Mutation((returns) => Message)
+    @UseMiddleware(checkAuth)
     async createMessage(
+        @Ctx() context: Context,
         @Arg('createMessageInput')
         createMessageInput: CreateMessageInput,
         @PubSub() pubSub: PubSubEngine,
     ): Promise<Message> {
-        const { senderId, conversationId, messageText } = createMessageInput;
+        const { conversationId, messageText } = createMessageInput;
+        const {
+            user: { userId },
+        } = context;
         const mess = await MessageModel.create({
-            senderId,
+            senderId: userId,
             conversationId,
             messageText,
         });
         const msg = await mess.save();
+        const conversationResolver = new ConversationResolver();
+        await conversationResolver.addLastMessageId(conversationId, msg._id);
         const id: string | null = msg._id;
         const createdAt = msg.createdAt;
         const payload = {
@@ -44,7 +52,7 @@ export class MessageResolver {
             conversationId,
             messageText,
             createdAt,
-            senderId,
+            senderId: userId,
         };
         await pubSub.publish(conversationId, payload);
         return msg;

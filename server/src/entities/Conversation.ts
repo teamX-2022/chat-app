@@ -12,7 +12,9 @@ export class Conversation {
     @Field()
     @prop()
     name: string;
-
+    @Field({ nullable: true })
+    @prop()
+    lastMessageId: string;
     @Field({ nullable: true })
     @prop()
     leaderId: ObjectId;

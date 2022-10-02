@@ -39,4 +39,13 @@ export class ConversationResolver {
         }
         return conversationIds;
     }
+
+    @Mutation((_return) => Boolean)
+    async addLastMessageId(conversationId: string, messageId: string): Promise<boolean> {
+        const cvst = await ConversationModel.findOne({ _id: conversationId });
+        if (!cvst) throw new Error('conversation not found');
+        cvst.lastMessageId = messageId;
+        await cvst.save();
+        return true;
+    }
 }
