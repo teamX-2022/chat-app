@@ -1,10 +1,12 @@
+import { ConversationModel } from './../models/Model';
 import { Context } from './../types/Context';
 import { checkAuth } from './../middleware/checkAuth';
 import { Member } from '../entities/Member';
+import { PipelineStage } from 'mongoose';
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
-import { FriendResolver } from './friend';
+// import { FriendResolver } from './friend';
 import { MemberModel } from '../models/Model';
-import { ConversationResolver } from './conversation';
+// import { ConversationResolver } from './conversation';
 import { ResponseMemberRoom } from '../types/ResponseMemberRoom';
 
 @Resolver()
@@ -30,23 +32,47 @@ export class MemberResolver {
     @Query((_return) => [ResponseMemberRoom])
     @UseMiddleware(checkAuth)
     async getRooms(@Ctx() context: Context): Promise<ResponseMemberRoom[]> {
-        const conversationResolver = new ConversationResolver();
-        const conversationIds: string[] = await conversationResolver.getConversationIds(context);
-        const rooms: ResponseMemberRoom[] = [];
-        for (var item of conversationIds) {
-            const room: ResponseMemberRoom = await this.getRoomChat(item);
-            rooms.push(room);
-        }
-        return rooms;
+        let response: ResponseMemberRoom[] = [];
+        const aggregate: PipelineStage[] = [
+            {
+                $match: {
+                    members: {
+                        $in: ['632923aac5ca25b5047ee6b1'],
+                    },
+                },
+            },
+            {
+                $project: {
+                    _id: {
+                        $toString: '$_id',
+                    },
+                    members: 1,
+                    name_group: '$name',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'members',
+                    localField: '_id',
+                    foreignField: 'conversationId',
+                    as: 'memberList',
+                },
+            },
+        ];
+
+        response = await ConversationModel.aggregate(aggregate);
+        console.log('asdasd', response);
+
+        return response;
     }
 
-    @Query((_return) => ResponseMemberRoom)
-    @UseMiddleware(checkAuth)
-    async getRoomChat(@Arg('conversationId') conversationId: string): Promise<ResponseMemberRoom> {
-        const members: Member[] = await MemberModel.find({ conversationId });
+    // @Query((_return) => ResponseMemberRoom)
+    // @UseMiddleware(checkAuth)
+    // async getRoomChat(@Arg('conversationId') conversationId: string): Promise<ResponseMemberRoom> {
+    //     const members: Member[] = await MemberModel.find({ conversationId });
 
-        return {
-            members,
-        };
-    }
+    //     return {
+    //         members,
+    //     };
+    // }
 }

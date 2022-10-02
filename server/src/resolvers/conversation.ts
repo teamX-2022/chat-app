@@ -10,7 +10,7 @@ import { MemberResolver } from './member';
 @Resolver()
 export class ConversationResolver {
     @Mutation((_return) => ID)
-    public async createConversation(@Arg('conversation') { name, members }: ConversationInput): Promise<ObjectId> {
+    public async createConversation(@Arg('conversation') { name, members }: ConversationInput): Promise<string> {
         if (name.length <= 0) throw new Error('name must not empty');
         if (!members) throw new Error('member must not empty');
 

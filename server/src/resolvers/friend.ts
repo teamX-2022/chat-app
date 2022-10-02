@@ -37,7 +37,7 @@ export class FriendResolver {
 
     @Mutation(() => ID)
     @UseMiddleware(checkAuth)
-    async addFriend(@Arg('friendId') friendId: string, @Ctx() context: Context): Promise<ObjectId> {
+    async addFriend(@Arg('friendId') friendId: string, @Ctx() context: Context): Promise<string> {
         const {
             user: { userId },
         } = context;

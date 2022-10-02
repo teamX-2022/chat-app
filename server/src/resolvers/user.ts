@@ -58,7 +58,7 @@ export class UserResolver {
             code: 200,
             success: true,
             message: 'User registration successfull',
-            userId: newUser._id as ObjectId,
+            userId: newUser._id,
         };
     }
 

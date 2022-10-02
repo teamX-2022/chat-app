@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+// import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
 // import { User } from "../entities/User";
 import { IMutationResponse } from './MutationResponse';
@@ -10,7 +10,7 @@ export class UserMutationResponse implements IMutationResponse {
     message?: string;
     refreshToken?: string;
     @Field(() => ID)
-    userId?: ObjectId;
+    userId?: string;
     @Field({ nullable: true })
     accessToken?: string;
 }
