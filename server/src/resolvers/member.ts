@@ -1,12 +1,11 @@
-import { ConversationModel } from './../models/Model';
 import { Context } from './../types/Context';
 import { checkAuth } from './../middleware/checkAuth';
 import { Member } from '../entities/Member';
-import { PipelineStage } from 'mongoose';
+// import { PipelineStage } from 'mongoose';
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql';
 // import { FriendResolver } from './friend';
 import { MemberModel } from '../models/Model';
-// import { ConversationResolver } from './conversation';
+import { ConversationResolver } from './conversation';
 import { ResponseMemberRoom } from '../types/ResponseMemberRoom';
 
 @Resolver()
@@ -29,50 +28,75 @@ export class MemberResolver {
         throw new Error('params invalid');
     }
 
-    @Query((_return) => [ResponseMemberRoom])
+    // @Query((_return) => [ResponseMemberRoom])
+    // @UseMiddleware(checkAuth)
+    // async getRooms(@Ctx() context: Context): Promise<ResponseMemberRoom[]> {
+    //     let response: string[] = [];
+    //     const object = await MemberModel.aggregate([
+    //         {
+    //             $match: {
+    //                 conversationId: '633402fca850ae6f95380a49',
+    //             },
+    //         },
+    //         {
+    //             $group: {
+    //                 _id: '$conversationId',
+    //                 members: {
+    //                     $push: '$userId',
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             $project: {
+    //                 _id: 0,
+    //                 conversationId: '$_id',
+    //                 members: 1,
+    //             },
+    //         },
+    //     ]).exec();
+
+    //     return object;
+    // }
+
+    @Query((_return) => Member)
     @UseMiddleware(checkAuth)
-    async getRooms(@Ctx() context: Context): Promise<ResponseMemberRoom[]> {
-        let response: ResponseMemberRoom[] = [];
-        const aggregate: PipelineStage[] = [
-            {
-                $match: {
-                    members: {
-                        $in: ['632923aac5ca25b5047ee6b1'],
-                    },
-                },
-            },
-            {
-                $project: {
-                    _id: {
-                        $toString: '$_id',
-                    },
-                    members: 1,
-                    name_group: '$name',
-                },
-            },
-            {
-                $lookup: {
-                    from: 'members',
-                    localField: '_id',
-                    foreignField: 'conversationId',
-                    as: 'memberList',
-                },
-            },
-        ];
+    async getMyFriendByConversationId(
+        @Ctx() { user: { userId } }: Context,
+        @Arg('conversationId') conversationId: string,
+    ): Promise<Member> {
+        const conversationResolver = new ConversationResolver();
 
-        response = await ConversationModel.aggregate(aggregate);
-        console.log('asdasd', response);
+        const member = await MemberModel.findOne({
+            conversationId: conversationId,
+            userId: {
+                $nin: [userId],
+            },
+        });
+        console.log(member);
 
-        return response;
+        if (!member) throw new Error('member not found');
+
+        return member;
     }
 
-    // @Query((_return) => ResponseMemberRoom)
+    // @Query((_return) => Member)
     // @UseMiddleware(checkAuth)
-    // async getRoomChat(@Arg('conversationId') conversationId: string): Promise<ResponseMemberRoom> {
-    //     const members: Member[] = await MemberModel.find({ conversationId });
+    // async getMyFriendByConversationId(
+    //     @Ctx() { user: { userId } }: Context,
+    //     @Arg('conversationId') conversationId: string,
+    // ): Promise<Member> {
+    //     const conversationResolver = new ConversationResolver();
 
-    //     return {
-    //         members,
-    //     };
+    //     const member = await MemberModel.findOne({
+    //         conversationId: conversationId,
+    //         userId: {
+    //             $nin: [userId],
+    //         },
+    //     });
+    //     console.log(member);
+
+    //     if (!member) throw new Error('member not found');
+
+    //     return member;
     // }
 }

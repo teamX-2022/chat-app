@@ -17,7 +17,7 @@ export class Conversation {
     lastMessageId: string;
     @Field({ nullable: true })
     @prop()
-    leaderId: ObjectId;
+    leaderId: string;
 
     @Field(() => [String])
     @prop({ type: () => String, ref: () => User })

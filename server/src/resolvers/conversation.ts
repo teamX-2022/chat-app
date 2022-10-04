@@ -6,11 +6,14 @@ import { ConversationModel } from '../models/Model';
 import { ObjectId } from 'mongodb';
 import { FriendResolver } from './friend';
 import { MemberResolver } from './member';
+import { Conversation } from '../entities/Conversation';
 
 @Resolver()
 export class ConversationResolver {
+    //tao room chat voi ban be
     @Mutation((_return) => ID)
-    public async createConversation(@Arg('conversation') { name, members }: ConversationInput): Promise<string> {
+    @UseMiddleware(checkAuth)
+    public async createConversation(@Arg('conversation') { name = '', members }: ConversationInput): Promise<string> {
         if (name.length <= 0) throw new Error('name must not empty');
         if (!members) throw new Error('member must not empty');
 
@@ -29,6 +32,32 @@ export class ConversationResolver {
         return _id;
     }
 
+    // tao room chat voi nhom
+    @Mutation((_return) => ID)
+    @UseMiddleware(checkAuth)
+    public async createGroupConversation(
+        @Ctx() { user: { userId } }: Context,
+        @Arg('conversation') { name, members }: ConversationInput,
+    ): Promise<string> {
+        if (name.length === 0) throw new Error('name must not empty');
+        if (!members || members.length === 0) throw new Error('member must not empty');
+
+        const conversation = await ConversationModel.create({
+            name,
+            members,
+            leaderId: userId,
+        });
+
+        const { _id } = await conversation.save();
+        const friendResolver = new FriendResolver();
+        const memberResolver = new MemberResolver();
+        for (let i = 0; i < members.length; ++i) {
+            const name1 = await friendResolver.getNameById(members[i]);
+            await memberResolver.addMember(name1, _id.toString(), members[i]);
+        }
+        return _id;
+    }
+
     @Query((_return) => [String])
     @UseMiddleware(checkAuth)
     async getConversationIds(@Ctx() { user: { userId } }: Context): Promise<string[]> {
@@ -40,6 +69,15 @@ export class ConversationResolver {
         return conversationIds;
     }
 
+    // get ds chat
+    @Query((_return) => [Conversation])
+    @UseMiddleware(checkAuth)
+    async getListConversation(@Ctx() { user: { userId } }: Context): Promise<Conversation[]> {
+        const list = await ConversationModel.find({ members: { $in: [userId] } });
+
+        return list;
+    }
+
     @Mutation((_return) => Boolean)
     async addLastMessageId(conversationId: string, messageId: string): Promise<boolean> {
         const cvst = await ConversationModel.findOne({ _id: conversationId });
@@ -47,5 +85,15 @@ export class ConversationResolver {
         cvst.lastMessageId = messageId;
         await cvst.save();
         return true;
+    }
+
+    @Query((_return) => Conversation)
+    async getConversationById(conversationId: string): Promise<Conversation> {
+        const conversation = await ConversationModel.findOne({
+            _id: conversationId,
+        });
+
+        if (!conversation) throw new Error('conversationId is not exists');
+        return conversation;
     }
 }
