@@ -1,0 +1,9 @@
+query GetMyFriendByConversationId($conversationId: String!) {
+    getMyFriendByConversationId(conversationId: $conversationId) {
+        _id
+        conversationId
+        createdAt
+        name
+        userId
+    }
+}

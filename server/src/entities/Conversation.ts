@@ -1,15 +1,16 @@
-import { prop, Ref } from '@typegoose/typegoose';
+import { modelOptions, prop, Ref } from '@typegoose/typegoose';
 import { ObjectId } from 'mongodb';
 import { Field, ID, ObjectType } from 'type-graphql';
 import { Message } from './Message';
 import { User } from './User';
 
 @ObjectType()
+@modelOptions({ schemaOptions: { timestamps: true } })
 export class Conversation {
     @Field(() => ID, { nullable: true })
     readonly _id: string;
 
-    @Field()
+    @Field({ nullable: true })
     @prop()
     name: string;
     @Field({ nullable: true })

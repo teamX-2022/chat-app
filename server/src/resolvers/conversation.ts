@@ -13,8 +13,7 @@ export class ConversationResolver {
     //tao room chat voi ban be
     @Mutation((_return) => ID)
     @UseMiddleware(checkAuth)
-    public async createConversation(@Arg('conversation') { name = '', members }: ConversationInput): Promise<string> {
-        if (name.length <= 0) throw new Error('name must not empty');
+    public async createConversation(@Arg('conversation') { name, members }: ConversationInput): Promise<string> {
         if (!members) throw new Error('member must not empty');
 
         const conversation = await ConversationModel.create({
@@ -39,7 +38,7 @@ export class ConversationResolver {
         @Ctx() { user: { userId } }: Context,
         @Arg('conversation') { name, members }: ConversationInput,
     ): Promise<string> {
-        if (name.length === 0) throw new Error('name must not empty');
+        if (!name) throw new Error('name must not empty');
         if (!members || members.length === 0) throw new Error('member must not empty');
 
         const conversation = await ConversationModel.create({

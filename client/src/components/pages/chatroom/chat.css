@@ -1,0 +1,47 @@
+.chatContainer {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+}
+
+.messageContainer {
+    flex: 1;
+    padding: 10px 0;
+    background-color: rgb(238, 237, 237);
+    display: flex;
+}
+
+.messageList {
+    display: flex;
+    flex-direction: column;
+    padding: 0 3px;
+    flex: 1;
+}
+
+.messageCard {
+    max-width: 600px;
+    text-align: start;
+    padding: 10px 0;
+    margin: 5px 0;
+    background-color: #fff;
+    border-radius: 15px;
+}
+.messageCard.mymessage {
+    align-self: flex-end;
+}
+.messageText {
+    margin: 0;
+    padding-left: 15px;
+}
+
+/* .chatAction {
+}
+
+.actionContainer {
+}
+
+.textInput {
+}
+
+.sendBtn {
+} */

@@ -57,7 +57,8 @@ export class MemberResolver {
 
     //     return object;
     // }
-
+    // get member is my friend
+    // nhan member la ban cua minh
     @Query((_return) => Member)
     @UseMiddleware(checkAuth)
     async getMyFriendByConversationId(
