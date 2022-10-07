@@ -1,4 +1,5 @@
 // import { Dispatch, SetStateAction } from 'react';
+import { useGetMessagesQuery } from '../../../generated/graphql';
 import './chat.css';
 
 interface OptionalMiddleName {
@@ -6,6 +7,15 @@ interface OptionalMiddleName {
 }
 
 const Chat = ({ id }: OptionalMiddleName) => {
+    const { loading, error, data } = useGetMessagesQuery({
+        fetchPolicy: 'no-cache',
+        variables: {
+            getMessagesConversationId2: id,
+        },
+    });
+    if (loading) return <h1>loading...</h1>;
+    if (error) return <h1>{JSON.stringify(error)}</h1>;
+
     return (
         <div className="chatContainer">
             <div className="messageContainer">
@@ -13,13 +23,11 @@ const Chat = ({ id }: OptionalMiddleName) => {
                     <div className="messageCard">
                         <p className="messageText">Lorem ipsum dolor,{id}</p>
                     </div>
-                    <div className="messageCard mymessage">
-                        <p className="messageText">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus architecto officiis
-                            aliquid reiciendis earum. Assumenda totam in vitae unde ducimus accusantium excepturi
-                            dolorum voluptatem, blanditiis sunt? Eligendi facilis recusandae tenetur.
-                        </p>
-                    </div>
+                    {data?.getMessages.map((e) => (
+                        <div className="messageCard">
+                            <p className="messageText">{e.messageText}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className="chatAction">
