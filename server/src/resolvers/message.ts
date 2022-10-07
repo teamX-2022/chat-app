@@ -71,11 +71,7 @@ export class MessageResolver {
 
     @Query(() => [Message])
     @UseMiddleware(checkAuth)
-    async getMessages(
-        @Ctx() { user: { userId } }: Context,
-        @Arg('friendId') friendId: string,
-        @Arg('conversationId') conversationId: string,
-    ): Promise<Message[]> {
+    async getMessages(@Arg('conversationId') conversationId: string): Promise<Message[]> {
         const messages = await MessageModel.find({
             conversationId: conversationId,
         }).exec();

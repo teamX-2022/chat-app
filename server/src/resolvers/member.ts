@@ -73,7 +73,6 @@ export class MemberResolver {
                 $nin: [userId],
             },
         });
-        console.log(member);
 
         if (!member) throw new Error('member not found');
 

@@ -1,19 +1,33 @@
 // import { Dispatch, SetStateAction } from 'react';
 import { useGetMessagesQuery } from '../../../generated/graphql';
+import { useMessageContext } from '../../../contexts/MessageContext';
 import './chat.css';
 
-interface OptionalMiddleName {
-    id: string;
-}
+const Chat = () => {
+    const { id } = useMessageContext();
 
-const Chat = ({ id }: OptionalMiddleName) => {
     const { loading, error, data } = useGetMessagesQuery({
         fetchPolicy: 'no-cache',
         variables: {
             getMessagesConversationId2: id,
         },
     });
-    if (loading) return <h1>loading...</h1>;
+    if (loading)
+        return (
+            <div className="chatContainer">
+                <div className="messageContainer"></div>
+                <div className="chatAction">
+                    <div className="actionContainer">
+                        <div>
+                            <input type="text" className="textInput" />
+                        </div>
+                        <div>
+                            <button className="sendBtn">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     if (error) return <h1>{JSON.stringify(error)}</h1>;
 
     return (

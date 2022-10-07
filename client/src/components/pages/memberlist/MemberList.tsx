@@ -3,16 +3,14 @@ import avatar from '../../../images/img.png';
 import { useGetListConversationQuery } from '../../../generated/graphql';
 import MemberName from '../../memberName/MemberName';
 import LastMessage from '../../lastMessage/LastMessage';
-import { Dispatch, SetStateAction } from 'react';
+import { useMessageContext } from '../../../contexts/MessageContext';
 
-interface OptionalMiddleName {
-    setId: Dispatch<SetStateAction<string>>;
-}
-
-const MemberList = ({ setId }: OptionalMiddleName) => {
+const MemberList = () => {
     const { loading, error, data } = useGetListConversationQuery({ fetchPolicy: 'no-cache' });
+    const { setId } = useMessageContext();
     if (loading) return <h1>loading...</h1>;
     if (error) return <h1>{JSON.stringify(error)}</h1>;
+
     const onClick = (id: string) => {
         setId(id);
     };
