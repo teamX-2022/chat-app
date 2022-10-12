@@ -13,6 +13,7 @@
 
 .memberList {
     overflow-y: auto;
+    height: calc(100vh - 220px);
 }
 
 .memberList::-webkit-scrollbar {

@@ -31,7 +31,7 @@ function App() {
                         <Route path="register" element={<Register />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="logout" element={<Profile />} />
-                        <Route path="message" element={<Message />} />
+                        <Route path="message/*" element={<Message />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

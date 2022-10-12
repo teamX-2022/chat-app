@@ -4,6 +4,7 @@ import { useGetListConversationQuery } from '../../../generated/graphql';
 import MemberName from '../../memberName/MemberName';
 import LastMessage from '../../lastMessage/LastMessage';
 import { useMessageContext } from '../../../contexts/MessageContext';
+import { Link } from 'react-router-dom';
 
 const MemberList = () => {
     const { loading, error, data } = useGetListConversationQuery({ fetchPolicy: 'no-cache' });
@@ -31,16 +32,18 @@ const MemberList = () => {
                     </div>
                 </div>
                 {data?.getListConversation.map((item) => (
-                    <div className="member" key={item._id} onClick={() => onClick(item._id as string)}>
-                        <div className="memberAvatar">
-                            <img src={avatar} alt="" className="memberImg" />
-                        </div>
+                    <Link key={item._id} to={item._id as string}>
+                        <div className="member" key={item._id} onClick={() => onClick(item._id as string)}>
+                            <div className="memberAvatar">
+                                <img src={avatar} alt="" className="memberImg" />
+                            </div>
 
-                        <div className="memberInfo">
-                            <MemberName converId={item._id as string} />
-                            <LastMessage className="lastMessage" />
+                            <div className="memberInfo">
+                                <MemberName converId={item._id as string} />
+                                <LastMessage className="lastMessage" />
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
