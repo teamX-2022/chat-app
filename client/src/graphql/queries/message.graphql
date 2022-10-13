@@ -7,3 +7,13 @@ query GetMessages($getMessagesConversationId2: String!) {
         senderId
     }
 }
+
+mutation CreateMessage($createMessageCreateMessageInput2: CreateMessageInput!) {
+    createMessage(createMessageInput: $createMessageCreateMessageInput2) {
+        _id
+        conversationId
+        createdAt
+        messageText
+        senderId
+    }
+}

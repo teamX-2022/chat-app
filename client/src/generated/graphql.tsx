@@ -211,8 +211,8 @@ export type SubscriptionMessageSentArgs = {
 export type User = {
   __typename?: 'User';
   _id?: Maybe<Scalars['ID']>;
-  avatar: Scalars['String'];
-  coverPicture: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
+  coverPicture?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   tokenVersion: Scalars['Float'];
   username: Scalars['String'];
@@ -271,6 +271,13 @@ export type GetMessagesQueryVariables = Exact<{
 
 
 export type GetMessagesQuery = { __typename?: 'Query', getMessages: Array<{ __typename?: 'Message', _id?: string | null, conversationId: string, createdAt: any, messageText: string, senderId: string }> };
+
+export type CreateMessageMutationVariables = Exact<{
+  createMessageCreateMessageInput2: CreateMessageInput;
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'Message', _id?: string | null, conversationId: string, createdAt: any, messageText: string, senderId: string } };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -532,6 +539,43 @@ export function useGetMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
 export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
 export type GetMessagesQueryResult = Apollo.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export const CreateMessageDocument = gql`
+    mutation CreateMessage($createMessageCreateMessageInput2: CreateMessageInput!) {
+  createMessage(createMessageInput: $createMessageCreateMessageInput2) {
+    _id
+    conversationId
+    createdAt
+    messageText
+    senderId
+  }
+}
+    `;
+export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      createMessageCreateMessageInput2: // value for 'createMessageCreateMessageInput2'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, options);
+      }
+export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const UsersDocument = gql`
     query Users {
   users {

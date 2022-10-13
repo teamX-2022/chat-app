@@ -3,10 +3,10 @@ import { useMessageContext } from '../../../contexts/MessageContext';
 import './chat.css';
 import { Route, Routes } from 'react-router-dom';
 import Content from './content/Content';
+import ChatAction from './action/ChatAction';
 
 const Chat = () => {
     const { id } = useMessageContext();
-
     return (
         <Routes>
             <Route
@@ -35,14 +35,7 @@ const Chat = () => {
                             <Content msgId={id} />
                         </div>
                         <div className="chatAction">
-                            <div className="actionContainer">
-                                <div>
-                                    <input type="text" className="textInput" />
-                                </div>
-                                <div>
-                                    <button className="sendBtn">Gửi</button>
-                                </div>
-                            </div>
+                            <ChatAction msgId={id} />
                         </div>
                     </div>
                 }
