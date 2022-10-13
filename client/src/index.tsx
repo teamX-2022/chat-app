@@ -3,15 +3,28 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from '@apollo/client';
+// import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, split, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import JWTManager from './utils/jwt';
 import AuthContextProvider from './contexts/AuthContext';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 
-const httpLink = createHttpLink({
+const httpLink = new HttpLink({
     uri: 'http://localhost:4000/graphql',
     credentials: 'include',
 });
+
+const wsLink = new GraphQLWsLink(
+    createClient({
+        url: 'ws://localhost:4000/graphql',
+        connectionParams: {
+            authToken: JWTManager.getToken() as string,
+        },
+    }),
+);
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from JWTManager if it exists
@@ -25,8 +38,15 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
-const client = new ApolloClient({
-    link: authLink.concat(httpLink),
+export const client = new ApolloClient({
+    link: split(
+        ({ query }) => {
+            const definition = getMainDefinition(query);
+            return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+        },
+        authLink.concat(wsLink as any),
+        authLink.concat(httpLink as any),
+    ),
     cache: new InMemoryCache(),
 });
 

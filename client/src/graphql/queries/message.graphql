@@ -17,3 +17,23 @@ mutation CreateMessage($createMessageCreateMessageInput2: CreateMessageInput!) {
         senderId
     }
 }
+
+subscription MessageSent($topic: String!) {
+    messageSent(topic: $topic) {
+        _id
+        conversationId
+        createdAt
+        messageText
+        senderId
+    }
+}
+
+subscription MessageSent2 {
+    messageSent2 {
+        _id
+        conversationId
+        createdAt
+        messageText
+        senderId
+    }
+}

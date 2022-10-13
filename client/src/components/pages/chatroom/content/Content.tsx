@@ -1,7 +1,11 @@
 import './content.css';
-import { Message, useGetMessagesQuery } from '../../../../generated/graphql';
+import { Message, MessageSent2Document, useGetMessagesQuery } from '../../../../generated/graphql';
 import { useParams } from 'react-router-dom';
 import JWTManager from '../../../../utils/jwt';
+import { useEffect } from 'react';
+// import { gql, useSubscription } from '@apollo/client';
+// import { useEffect } from 'react';
+
 interface Property {
     msgId: string;
 }
@@ -13,12 +17,30 @@ const Content = ({ msgId }: Property) => {
     if (userId === null) {
         throw new Error('login');
     }
-    const { loading, error, data } = useGetMessagesQuery({
+
+    const { loading, error, data, subscribeToMore } = useGetMessagesQuery({
         fetchPolicy: 'no-cache',
         variables: {
             getMessagesConversationId2: id as string,
         },
     });
+
+    useEffect(() => {
+        subscribeToMore({
+            document: MessageSent2Document,
+            variables: {
+                getMessagesConversationId2: id as string,
+            },
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                const newMessage = (subscriptionData.data as any).messageSent2;
+                console.log(prev);
+                return Object.assign({}, prev, {
+                    getMessages: [newMessage, ...prev.getMessages],
+                });
+            },
+        });
+    }, []);
 
     if (loading)
         return (

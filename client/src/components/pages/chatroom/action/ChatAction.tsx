@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useCreateMessageMutation } from '../../../../generated/graphql';
 import './chataction.css';
 
+// import { useEffect } from 'react';
+// import { client } from '../../../..';
 interface ChatActionProps {
     msgId: string;
 }

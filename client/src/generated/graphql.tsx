@@ -201,6 +201,7 @@ export type RegisterInput = {
 export type Subscription = {
   __typename?: 'Subscription';
   messageSent: Message;
+  messageSent2: Message;
 };
 
 
@@ -278,6 +279,18 @@ export type CreateMessageMutationVariables = Exact<{
 
 
 export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'Message', _id?: string | null, conversationId: string, createdAt: any, messageText: string, senderId: string } };
+
+export type MessageSentSubscriptionVariables = Exact<{
+  topic: Scalars['String'];
+}>;
+
+
+export type MessageSentSubscription = { __typename?: 'Subscription', messageSent: { __typename?: 'Message', _id?: string | null, conversationId: string, createdAt: any, messageText: string, senderId: string } };
+
+export type MessageSent2SubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MessageSent2Subscription = { __typename?: 'Subscription', messageSent2: { __typename?: 'Message', _id?: string | null, conversationId: string, createdAt: any, messageText: string, senderId: string } };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -576,6 +589,73 @@ export function useCreateMessageMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
 export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
 export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
+export const MessageSentDocument = gql`
+    subscription MessageSent($topic: String!) {
+  messageSent(topic: $topic) {
+    _id
+    conversationId
+    createdAt
+    messageText
+    senderId
+  }
+}
+    `;
+
+/**
+ * __useMessageSentSubscription__
+ *
+ * To run a query within a React component, call `useMessageSentSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMessageSentSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessageSentSubscription({
+ *   variables: {
+ *      topic: // value for 'topic'
+ *   },
+ * });
+ */
+export function useMessageSentSubscription(baseOptions: Apollo.SubscriptionHookOptions<MessageSentSubscription, MessageSentSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<MessageSentSubscription, MessageSentSubscriptionVariables>(MessageSentDocument, options);
+      }
+export type MessageSentSubscriptionHookResult = ReturnType<typeof useMessageSentSubscription>;
+export type MessageSentSubscriptionResult = Apollo.SubscriptionResult<MessageSentSubscription>;
+export const MessageSent2Document = gql`
+    subscription MessageSent2 {
+  messageSent2 {
+    _id
+    conversationId
+    createdAt
+    messageText
+    senderId
+  }
+}
+    `;
+
+/**
+ * __useMessageSent2Subscription__
+ *
+ * To run a query within a React component, call `useMessageSent2Subscription` and pass it any options that fit your needs.
+ * When your component renders, `useMessageSent2Subscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessageSent2Subscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMessageSent2Subscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageSent2Subscription, MessageSent2SubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<MessageSent2Subscription, MessageSent2SubscriptionVariables>(MessageSent2Document, options);
+      }
+export type MessageSent2SubscriptionHookResult = ReturnType<typeof useMessageSent2Subscription>;
+export type MessageSent2SubscriptionResult = Apollo.SubscriptionResult<MessageSent2Subscription>;
 export const UsersDocument = gql`
     query Users {
   users {
