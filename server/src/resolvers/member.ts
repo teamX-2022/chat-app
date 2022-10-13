@@ -67,7 +67,7 @@ export class MemberResolver {
     ): Promise<Member> {
         const conversationResolver = new ConversationResolver();
 
-        const member = await MemberModel.findOne({
+        const member = await MemberModel.find({
             conversationId: conversationId,
             userId: {
                 $nin: [userId],
@@ -76,7 +76,7 @@ export class MemberResolver {
 
         if (!member) throw new Error('member not found');
 
-        return member;
+        return member[0];
     }
 
     // @Query((_return) => Member)

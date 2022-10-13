@@ -12,11 +12,11 @@ export class User {
     @prop()
     name: string;
 
-    @Field()
-    @prop({ default: null })
+    @Field({ nullable: true })
+    @prop()
     avatar: string;
-    @Field()
-    @prop({ default: null })
+    @Field({ nullable: true })
+    @prop()
     coverPicture: string;
 
     @Field()

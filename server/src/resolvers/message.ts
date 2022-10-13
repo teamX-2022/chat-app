@@ -22,6 +22,8 @@ import { Context } from '../types/Context';
 
 // const pubsub = new PubSub();
 
+const chanel = 'MESSAGE_CHAT';
+
 @Resolver()
 export class MessageResolver {
     // create message
@@ -54,16 +56,23 @@ export class MessageResolver {
             createdAt,
             senderId: userId,
         };
-        await pubSub.publish(conversationId, payload);
+        await pubSub.publish(chanel, payload);
         return msg;
     }
 
     // listen message
-    @Subscription({ topics: ({ args }) => args.topic })
+    @Subscription(() => Message, { topics: ({ args }) => args.topic })
     messageSent(
         @Arg('topic') topic: String,
         @Root() { _id, conversationId, messageText, createdAt, senderId }: Message,
     ): Message {
+        console.log(messageText);
+
+        return { _id, conversationId, messageText, createdAt, senderId };
+    }
+
+    @Subscription(() => Message, { topics: chanel })
+    messageSent2(@Root() { _id, conversationId, messageText, createdAt, senderId }: Message): Message {
         console.log(messageText);
 
         return { _id, conversationId, messageText, createdAt, senderId };

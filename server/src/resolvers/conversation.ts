@@ -87,7 +87,8 @@ export class ConversationResolver {
     }
 
     @Query((_return) => Conversation)
-    async getConversationById(conversationId: string): Promise<Conversation> {
+    @UseMiddleware(checkAuth)
+    async getConversationById(@Arg('conversationId') conversationId: string): Promise<Conversation> {
         const conversation = await ConversationModel.findOne({
             _id: conversationId,
         });
