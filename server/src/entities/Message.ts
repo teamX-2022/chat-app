@@ -16,6 +16,10 @@ export class Message {
     @prop()
     messageText: string;
 
+    // @Field()
+    // @prop({default: 'text'})
+    // type : "text" | "file" | "video" | "image"
+
     @Field()
     @prop({ default: Date.now() })
     createdAt: Date;

@@ -56,7 +56,7 @@ export class MessageResolver {
             createdAt,
             senderId: userId,
         };
-        await pubSub.publish(chanel, payload);
+        await pubSub.publish(conversationId, payload);
         return msg;
     }
 

@@ -47,7 +47,9 @@ export const client = new ApolloClient({
         authLink.concat(wsLink as any),
         authLink.concat(httpLink as any),
     ),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        addTypename: false,
+    }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

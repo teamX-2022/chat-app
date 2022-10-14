@@ -1,5 +1,5 @@
 import './content.css';
-import { Message, MessageSent2Document, useGetMessagesQuery } from '../../../../generated/graphql';
+import { Message, MessageSentDocument, useGetMessagesQuery } from '../../../../generated/graphql';
 import { useParams } from 'react-router-dom';
 import JWTManager from '../../../../utils/jwt';
 import { useEffect } from 'react';
@@ -19,7 +19,7 @@ const Content = ({ msgId }: Property) => {
     }
 
     const { loading, error, data, subscribeToMore } = useGetMessagesQuery({
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'network-only',
         variables: {
             getMessagesConversationId2: id as string,
         },
@@ -27,16 +27,17 @@ const Content = ({ msgId }: Property) => {
 
     useEffect(() => {
         subscribeToMore({
-            document: MessageSent2Document,
+            document: MessageSentDocument,
             variables: {
-                getMessagesConversationId2: id as string,
+                topic: id as string,
             },
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
-                const newMessage = (subscriptionData.data as any).messageSent2;
-                console.log(prev);
+                const newMessage = (subscriptionData.data as any).messageSent;
+                console.log(newMessage);
+
                 return Object.assign({}, prev, {
-                    getMessages: [newMessage, ...prev.getMessages],
+                    getMessages: [...prev.getMessages, newMessage],
                 });
             },
         });

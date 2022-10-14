@@ -13,10 +13,10 @@ export class User {
     name: string;
 
     @Field({ nullable: true })
-    @prop()
+    @prop({ default: '' })
     avatar: string;
     @Field({ nullable: true })
-    @prop()
+    @prop({ default: '' })
     coverPicture: string;
 
     @Field()

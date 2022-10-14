@@ -27,13 +27,3 @@ subscription MessageSent($topic: String!) {
         senderId
     }
 }
-
-subscription MessageSent2 {
-    messageSent2 {
-        _id
-        conversationId
-        createdAt
-        messageText
-        senderId
-    }
-}
