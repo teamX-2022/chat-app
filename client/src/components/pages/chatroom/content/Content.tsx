@@ -19,7 +19,7 @@ const Content = ({ msgId }: Property) => {
     }
 
     const { loading, error, data, subscribeToMore } = useGetMessagesQuery({
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-first',
         variables: {
             getMessagesConversationId2: id as string,
         },
@@ -34,7 +34,6 @@ const Content = ({ msgId }: Property) => {
             updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
                 const newMessage = (subscriptionData.data as any).messageSent;
-                console.log(newMessage);
 
                 return Object.assign({}, prev, {
                     getMessages: [...prev.getMessages, newMessage],
