@@ -30,10 +30,10 @@
 }
 
 
-.chat-bao:hover .rep-chat-friend {
+.message__bao:hover .rep-chat-friend {
     display: block;
 }
-.chat-bao:hover .rep-chat-mine{
+.message__bao:hover .rep-chat-mine{
     display: flex;
     flex-direction: row-reverse;
 
@@ -61,7 +61,7 @@
 
 }
 .time-chat-friend{
-    text-align: left;
+    text-align: right;
 }
 .time-chat-mine{
     text-align: left;

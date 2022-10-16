@@ -18,11 +18,15 @@
     cursor: pointer;
 
 }
+
 .ItemUser__bao:hover .item-chat-options{
     display: block;
 }
 .ItemUser__bao:hover .last-time-chat{
     display: none;
+}
+.ItemUser__bao-checked{
+    background-color: aquamarine;
 }
 .chatlist__bao{
     padding-right: 0px;
@@ -35,4 +39,10 @@
 }
 .item-chat-options:hover{
     background:none
+}
+.suggestion-search{
+   padding: 10px;
+}
+.suggestion-search:hover{
+    background-color: #D3D3D3;
 }

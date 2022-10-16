@@ -1,0 +1,9 @@
+query GetMessages($getMessagesConversationId2: String!) {
+    getMessages(conversationId: $getMessagesConversationId2) {
+        _id
+        conversationId
+        createdAt
+        messageText
+        senderId
+    }
+}

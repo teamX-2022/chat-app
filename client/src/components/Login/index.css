@@ -1,7 +1,3 @@
-.login-row{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
+.bao_login{
+    background-image: url("https://cutewallpaper.org/21/blue-background-pattern/Navy-Blue-Seamless-Circle-Background-Pattern-Design.jpg");
 }

@@ -6,6 +6,7 @@ import './App.css';
 // import Home from './components/Home';
 // import Layout from './components/Layout';
 import Login from './components/Login';
+import Register from './components/Register';
 // import Message from './components/Message';
 // import Profile from './components/Profile';
 // import Register from './components/Register';
@@ -29,19 +30,13 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Routes>
-                    {/* <Route path="/" element={<Login />}>
-                        <Route index element={<Home />} />
-                        <Route path="chat-room" element={<ChatRoom />} />
-                        <Route path="register" element={<Register />} />
-                        <Route path="profile" element={<Profile />} />
-                        <Route path="logout" element={<Profile />} />
-                        <Route path="message" element={<Message />} />
-                    </Route> */}
+                        <Route path="/" element={<Login />}/>
+                        <Route path="/login" element={<Login />}/>
+                        <Route path="/chat-room/*" element={<ChatRoom /> } /> 
+                        <Route path="/register" element={<Register/> } /> 
                     
                 
-                        <Route path="/" element={<Login />}/>
-                    
-                    <Route path="/chat-room" element={<ChatRoom /> } /> 
+                        
                 </Routes>
             </BrowserRouter>
            

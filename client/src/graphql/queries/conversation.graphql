@@ -1,0 +1,18 @@
+query GetListConversation {
+    getListConversation {
+        members
+        _id
+        name
+        lastMessageId
+        leaderId
+    }
+}
+query GetConversationById($conversationId: String!) {
+  getConversationById(conversationId: $conversationId) {
+    name  
+    _id
+    lastMessageId
+    leaderId
+    members
+  }
+}
